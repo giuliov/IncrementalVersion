@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- assume is here -->
+  <UsingTask
+    AssemblyFile="$(MSBuildProjectDirectory)\..\BuildTemplate\MSBuild.ExtensionPack.dll"
+    TaskName="MSBuild.ExtensionPack.Framework.AssemblyInfo"/>
+
+  <Target
+    Name="BeforeCompile"
+    Inputs="$(MSBuildAllProjects);
+			@(Compile);                               
+			@(_CoreCompileResourceInputs);
+			$(ApplicationIcon);
+			$(AssemblyOriginatorKeyFile);
+			@(ReferencePath);
+			@(CompiledLicenseFile);
+			@(LinkResource);
+			@(EmbeddedDocumentation); 
+			$(Win32Resource);
+			$(Win32Manifest);
+			@(CustomAdditionalCompileInputs)"
+    Outputs="@(DocFileItem);
+			 @(IntermediateAssembly);
+			 @(_DebugSymbolsIntermediatePath);                 
+			 $(NonExistentFile);
+			 @(CustomAdditionalCompileOutputs)"
+    DependsOnTargets="$(BeforeCompileDependsOn)">
+
+    <ItemGroup>
+      <AssemblyInfoFiles Include="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.cs"/>
+    </ItemGroup>
+    
+    <MSBuild.ExtensionPack.Framework.AssemblyInfo
+      AssemblyInfoFiles="@(AssemblyInfoFiles)"
+      AssemblyFileBuildNumberType="YearWeekDay"
+      AssemblyFileRevisionType="AutoIncrement"
+      FirstDayOfWeek="Sunday"
+      />
+
+  </Target>
+</Project>

@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30324.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "ConsoleApplication1\ConsoleApplication1.csproj", "{AE2B2B89-D9AB-4047-98E4-9D5913C055DA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TfsBuild", "TfsBuild", "{07D61F24-5374-44C7-A135-99528FD7AF75}"
+	ProjectSection(SolutionItems) = preProject
+		BuildTemplate\AutoIncr.TfvcTemplate.12.xaml = BuildTemplate\AutoIncr.TfvcTemplate.12.xaml
+		BuildTemplate\autoIncrTfs2013.targets = BuildTemplate\autoIncrTfs2013.targets
+		BuildTemplate\Ionic.Zip.dll = BuildTemplate\Ionic.Zip.dll
+		BuildTemplate\MSBuild.ExtensionPack.dll = BuildTemplate\MSBuild.ExtensionPack.dll
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE2B2B89-D9AB-4047-98E4-9D5913C055DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE2B2B89-D9AB-4047-98E4-9D5913C055DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE2B2B89-D9AB-4047-98E4-9D5913C055DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE2B2B89-D9AB-4047-98E4-9D5913C055DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

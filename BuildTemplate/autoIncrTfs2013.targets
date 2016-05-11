@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- assume the DLL is in the same folder as this Targets file -->
+  <UsingTask
+    AssemblyFile="$(MSBuildThisFileDirectory)\MSBuild.ExtensionPack.dll"
+    TaskName="MSBuild.ExtensionPack.Framework.AssemblyInfo"/>
+
+	<Target
+    Name="BeforeCompile"
+    Inputs="$(MSBuildAllProjects);
+			@(Compile);                               
+			@(_CoreCompileResourceInputs);
+			$(ApplicationIcon);
+			$(AssemblyOriginatorKeyFile);
+			@(ReferencePath);
+			@(CompiledLicenseFile);
+			@(LinkResource);
+			@(EmbeddedDocumentation); 
+			$(Win32Resource);
+			$(Win32Manifest);
+			@(CustomAdditionalCompileInputs)"
+    Outputs="@(DocFileItem);
+			 @(IntermediateAssembly);
+			 @(_DebugSymbolsIntermediatePath);                 
+			 $(NonExistentFile);
+			 @(CustomAdditionalCompileOutputs)"
+    DependsOnTargets="$(BeforeCompileDependsOn)">
+
+    <ItemGroup>
+      <AssemblyInfoFiles Include="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.cs"/>
+    </ItemGroup>
+	
+    <PropertyGroup>
+      <TfsBuildNumberExtract>$(TF_BUILD_BUILDNUMBER.Substring($([MSBuild]::Add($(TF_BUILD_BUILDNUMBER.IndexOf("_")),1))))</TfsBuildNumberExtract>
+      <AssemblyFileBuildNumber>$(TfsBuildNumberExtract.Substring(0,$(TfsBuildNumberExtract.IndexOf("."))))</AssemblyFileBuildNumber>
+      <AssemblyFileRevisionNumber>$(TfsBuildNumberExtract.Substring($([MSBuild]::Add($(TfsBuildNumberExtract.IndexOf(".")),1))))</AssemblyFileRevisionNumber>
+    </PropertyGroup>
+	
+	<Message Text="TF_BUILD_BUILDNUMBER $(TF_BUILD_BUILDNUMBER)" Importance="High" />
+	<Message Text="TfsBuildNumberExtract $(TfsBuildNumberExtract)" Importance="High" />
+	<Message Text="AssemblyFileBuildNumber $(AssemblyFileBuildNumber)" Importance="High" />
+	<Message Text="AssemblyFileRevisionNumber $(AssemblyFileRevisionNumber)" Importance="High" />
+    
+    <MSBuild.ExtensionPack.Framework.AssemblyInfo
+      AssemblyInfoFiles="@(AssemblyInfoFiles)"
+	  AssemblyFileBuildNumber="$(AssemblyFileBuildNumber)"
+      AssemblyFileBuildNumberType="NoIncrement"
+	  AssemblyFileRevision="$(AssemblyFileRevisionNumber)"
+      AssemblyFileRevisionType="NoIncrement"
+      />
+
+  </Target>
+</Project>

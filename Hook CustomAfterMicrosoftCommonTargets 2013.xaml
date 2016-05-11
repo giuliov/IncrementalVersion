@@ -1,0 +1,69 @@
+<Sequence DisplayName="*** Hook CustomAfterMicrosoftCommonTargets 2013">
+	<Sequence.Variables>
+	  <Variable x:TypeArguments="x:String" Name="customAfterMicrosoftCommonTargets" />
+	  <Variable x:TypeArguments="x:String" Name="localBuildTemplatePath" />
+	  <Variable x:TypeArguments="mtbc1:IBuildDetail" Name="buildDetail" />
+	  <Variable x:TypeArguments="x:String" Name="msBuildArgs" />
+	  <Variable x:TypeArguments="mtvc:Workspace" Name="workspace" />
+	  <Variable x:TypeArguments="x:String" Name="srcDir" />
+	</Sequence.Variables>
+	<mtbac:GetEnvironmentVariable x:TypeArguments="x:String"
+		DisplayName="Get SourcesDirectory"
+		Name="[WellKnownEnvironmentVariables.SourcesDirectory]"
+		Result="[srcDir]" />
+	<mtbac:GetEnvironmentVariable
+		x:TypeArguments="mtbc1:IBuildDetail"
+		DisplayName="Get old BuildDetail"
+		Name="[WellKnownEnvironmentVariables.BuildDetail]"
+		Result="[buildDetail]" />
+	<Assign DisplayName="Get old Workspace">
+	  <Assign.To>
+		<OutArgument x:TypeArguments="mtvc:Workspace">[workspace]</OutArgument>
+	  </Assign.To>
+	  <Assign.Value>
+		<InArgument x:TypeArguments="mtvc:Workspace">[buildDetail.BuildServer.TeamProjectCollection.GetService(Of VersionControlServer)().GetWorkspace(srcDir)]</InArgument>
+	  </Assign.Value>
+	</Assign>
+	<mtbwa:ConvertWorkspaceItem
+		DisplayName="Convert BuildTemplate path to local"
+		Input="[buildDetail.BuildDefinition.Process.ServerPath]"
+		Result="[localBuildTemplatePath]" Workspace="[workspace]" />
+	<Assign DisplayName="Assign customAfterMicrosoftCommonTargets">
+	  <Assign.To>
+		<OutArgument x:TypeArguments="x:String">[customAfterMicrosoftCommonTargets]</OutArgument>
+	  </Assign.To>
+	  <Assign.Value>
+		<InArgument x:TypeArguments="x:String" xml:space="preserve">[System.IO.Path.Combine(
+			System.IO.Path.GetDirectoryName(localBuildTemplatePath),
+			"autoIncrTfs2013.targets")]</InArgument>
+	  </Assign.Value>
+	</Assign>
+	<Assign DisplayName="Get MSBuildArguments">
+	  <Assign.To>
+		<OutArgument x:TypeArguments="x:String">[msBuildArgs]</OutArgument>
+	  </Assign.To>
+	  <Assign.Value>
+		<InArgument x:TypeArguments="x:String">[AdvancedBuildSettings.GetValue(Of String)("MSBuildArguments")]</InArgument>
+	  </Assign.Value>
+	</Assign>
+	<Assign DisplayName="Append CustomAfterMicrosoftCommonTargets to MSBuildArguments">
+	  <Assign.To>
+		<OutArgument x:TypeArguments="x:String">[msBuildArgs]</OutArgument>
+	  </Assign.To>
+	  <Assign.Value>
+		<InArgument x:TypeArguments="x:String">[String.Format(
+			"{0} /p:CustomAfterMicrosoftCommonTargets=""{1}"" ",
+			msBuildArgs, customAfterMicrosoftCommonTargets)]</InArgument>
+	  </Assign.Value>
+	</Assign>
+	<InvokeMethod DisplayName="Set MSBuildArguments" MethodName="SetValue">
+	  <InvokeMethod.GenericTypeArguments>
+		<x:Type Type="x:String" />
+	  </InvokeMethod.GenericTypeArguments>
+	  <InvokeMethod.TargetObject>
+		<InArgument x:TypeArguments="mtbc:BuildParameter">[AdvancedBuildSettings]</InArgument>
+	  </InvokeMethod.TargetObject>
+	  <InArgument x:TypeArguments="x:String">MSBuildArguments</InArgument>
+	  <InArgument x:TypeArguments="x:String">[msBuildArgs]</InArgument>
+	</InvokeMethod>
+</Sequence>
