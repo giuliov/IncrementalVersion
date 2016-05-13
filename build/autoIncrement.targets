@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- assume the DLL is in the same folder as this Targets file -->
+  <UsingTask
+    AssemblyFile="$(MSBuildThisFileDirectory)\MSBuild.ExtensionPack.dll"
+    TaskName="MSBuild.ExtensionPack.Framework.AssemblyInfo"/>
+
+  <Target
+    Name="BeforeCompile"
+    Inputs="$(MSBuildAllProjects);
+			@(Compile);                               
+			@(_CoreCompileResourceInputs);
+			$(ApplicationIcon);
+			$(AssemblyOriginatorKeyFile);
+			@(ReferencePath);
+			@(CompiledLicenseFile);
+			@(LinkResource);
+			@(EmbeddedDocumentation); 
+			$(Win32Resource);
+			$(Win32Manifest);
+			@(CustomAdditionalCompileInputs)
+      $(ResolvedCodeAnalysisRuleSet)"
+    Outputs="@(DocFileItem);
+			@(IntermediateAssembly);
+			@(_DebugSymbolsIntermediatePath);                 
+			$(NonExistentFile);
+			@(CustomAdditionalCompileOutputs)"
+    DependsOnTargets="$(BeforeCompileDependsOn)">
+
+    <ItemGroup>
+      <AssemblyInfoFiles Include="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.cs"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+      <TfsBuildNumberExtract>$(BUILD_BUILDNUMBER)</TfsBuildNumberExtract>
+      <AssemblyFileBuildNumber>$([MSBuild]::Subtract( $(TfsBuildNumberExtract.Substring(0,$(TfsBuildNumberExtract.IndexOf(".")))) ,20150000))</AssemblyFileBuildNumber>
+      <AssemblyFileRevisionNumber>$(TfsBuildNumberExtract.Substring($([MSBuild]::Add($(TfsBuildNumberExtract.IndexOf(".")),1))))</AssemblyFileRevisionNumber>
+      <AssemblyInformationalVersionString>Build $(BUILD_DEFINITIONNAME) v$(BUILD_DEFINITIONVERSION) $(BUILD_BUILDNUMBER), Branch $(BUILD_SOURCEBRANCHNAME), Commit $(BUILD_SOURCEVERSION) </AssemblyInformationalVersionString>
+    </PropertyGroup>
+
+    <!-- troubleshooting messages, can be removed -->
+    <Message Text="AssemblyFileBuildNumber $(AssemblyFileBuildNumber)" />
+    <Message Text="AssemblyFileRevisionNumber $(AssemblyFileRevisionNumber)" />
+    <Message Text="AssemblyInformationalVersionString $(AssemblyInformationalVersionString)" />
+
+    <MSBuild.ExtensionPack.Framework.AssemblyInfo
+      AssemblyInfoFiles="@(AssemblyInfoFiles)"
+	    AssemblyFileBuildNumber="$(AssemblyFileBuildNumber)"
+      AssemblyFileBuildNumberType="NoIncrement"
+	    AssemblyFileRevision="$(AssemblyFileRevisionNumber)"
+      AssemblyFileRevisionType="NoIncrement"
+      UpdateAssemblyInformationalVersion="true"
+      AssemblyInformationalVersion="$(AssemblyInformationalVersionString)"
+      />
+
+  </Target>
+</Project>
