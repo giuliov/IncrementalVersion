@@ -7,7 +7,7 @@
     TaskName="MSBuild.ExtensionPack.Framework.AssemblyInfo"/>
 
   <Target
-    Name="BeforeCompile"
+    Name="AutoIncrementAssemblyInfo"
     Inputs="$(MSBuildAllProjects);
 			@(Compile);                               
 			@(_CoreCompileResourceInputs);

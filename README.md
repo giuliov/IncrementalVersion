@@ -10,3 +10,7 @@ This repository contains old code for TFS 2013 in the `tfs2013` branch and new c
  - `SampleProjects`  contains some Visual Studio Solutions used to test the technique.
  - `build` contains the MSBuild code that implements incremental assembly versioning.
 
+
+## Log
+Add `/property:CoreCompileDependsOn=AutoIncrementAssemblyInfo /property:CustomAfterMicrosoftCommonTargets=$(Build.SourcesDirectory)\build\autoIncrement.targets` to MSBuild Task.
+
