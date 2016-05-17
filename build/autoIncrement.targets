@@ -36,7 +36,8 @@
       <TfsBuildNumberExtract>$(BUILD_BUILDNUMBER)</TfsBuildNumberExtract>
       <AssemblyFileBuildNumber>$([MSBuild]::Subtract( $(TfsBuildNumberExtract.Substring(0,$(TfsBuildNumberExtract.IndexOf(".")))) ,20150000))</AssemblyFileBuildNumber>
       <AssemblyFileRevisionNumber>$(TfsBuildNumberExtract.Substring($([MSBuild]::Add($(TfsBuildNumberExtract.IndexOf(".")),1))))</AssemblyFileRevisionNumber>
-      <AssemblyInformationalVersionString>Build $(BUILD_DEFINITIONNAME) v$(BUILD_DEFINITIONVERSION) $(BUILD_BUILDNUMBER), Branch $(BUILD_SOURCEBRANCHNAME), Commit $(BUILD_SOURCEVERSION) </AssemblyInformationalVersionString>
+      <SourceVersion>$(BUILD_SOURCEVERSION.Substring(0,6))</SourceVersion>
+      <AssemblyInformationalVersionString>Build $(BUILD_DEFINITIONNAME) v$(BUILD_DEFINITIONVERSION) $(BUILD_BUILDNUMBER), Branch $(BUILD_SOURCEBRANCHNAME), Commit $(SourceVersion) </AssemblyInformationalVersionString>
     </PropertyGroup>
 
     <!-- troubleshooting messages, can be removed -->
