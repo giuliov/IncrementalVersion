@@ -8,6 +8,6 @@ namespace SampleIncrementalConsoleClassLibrary
 {
     public class Class1
     {
-        // change #001
+        // change #002
     }
 }
